@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 export function VideoFrame() {
   useEffect(() => {
-    const videoEl = document.getElementById('videoStream');
+    const videoEl:HTMLElement | null = document.getElementById('videoStream');
 
     if (!videoEl) {
       return;
@@ -20,7 +20,10 @@ export function VideoFrame() {
     ws.onmessage = (event) => {
       console.log('Received message from WebSocket');
       const blob = new Blob([event.data], { type: 'image/jpeg' });
-      videoEl.src = URL.createObjectURL(blob);
+
+      if (videoEl instanceof HTMLImageElement) {
+        videoEl.src = URL.createObjectURL(blob);
+      }
     };
 
     ws.onclose = function () {{
