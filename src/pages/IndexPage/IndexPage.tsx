@@ -38,6 +38,7 @@ export const IndexPage: FC = () => {
             <Cell subtitle="Telegram application palette information">Theme Parameters</Cell>
           </Link>
         </Section>
+        <p>video</p>
         <VideoFrame />
       </List>
     </Page>
