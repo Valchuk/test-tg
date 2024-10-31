@@ -5,6 +5,7 @@ import { Link } from '@/components/Link/Link.tsx';
 import { Page } from '@/components/Page.tsx';
 
 import tonSvg from './ton.svg';
+import { VideoFrame } from '@/components/VideoFrame/VideoFrame';
 
 export const IndexPage: FC = () => {
   return (
@@ -37,6 +38,7 @@ export const IndexPage: FC = () => {
             <Cell subtitle="Telegram application palette information">Theme Parameters</Cell>
           </Link>
         </Section>
+        <VideoFrame />
       </List>
     </Page>
   );
