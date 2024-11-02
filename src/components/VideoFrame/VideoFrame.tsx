@@ -1,5 +1,5 @@
 import './VideoFrame.css';
-import { MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { useLaunchParams } from '@telegram-apps/sdk-react';
 
 const FALLBACK_URL = 'sweeping-snail-new.ngrok-free.app';
@@ -11,10 +11,12 @@ export function VideoFrame() {
   const videoEl = useRef<HTMLImageElement | null>(null);
   const [frameSize, setFrameSize] = useState<number>(DEFAULT_FRAME_SIZE);
 
-  const handleFrameSize = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+  const handleFrameSize = (event: MouseEvent<HTMLButtonElement>) => {
     const action = (event.currentTarget as HTMLButtonElement).name;
-    setFrameSize((prevState) => action === 'decrease' ? prevState - FRAME_SIZE_STEP : prevState + FRAME_SIZE_STEP);
-  }, []);
+    setFrameSize((prevState) =>
+      action === 'decrease' ? prevState - FRAME_SIZE_STEP : prevState + FRAME_SIZE_STEP
+    );
+  };
 
   useEffect(() => {
     if (!videoEl.current) {
