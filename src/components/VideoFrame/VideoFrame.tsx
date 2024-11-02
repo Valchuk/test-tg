@@ -24,7 +24,7 @@ export function VideoFrame() {
     }
 
     const socketUrl = lp.startParam ? lp.startParam.replaceAll('_', '.') : FALLBACK_URL;
-    const ws = new WebSocket(`wss://${socketUrl}/wfs`);
+    const ws = new WebSocket(`wss://${socketUrl}/ws`);
 
     console.log('Connecting to WebSocket server...');
 
@@ -59,8 +59,6 @@ export function VideoFrame() {
   return (
     <div className="video-frame__root">
       <div className="video-frame__content">
-        {'lp.startParam'}:{lp.startParam}
-        <br />
         <img
           id="videoStream"
           alt="alt"
