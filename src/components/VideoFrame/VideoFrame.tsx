@@ -23,7 +23,8 @@ export function VideoFrame() {
       return;
     }
 
-    const ws = new WebSocket(`wss://${lp.startParam || FALLBACK_URL}/wfs`);
+    const socketUrl = lp.startParam ? lp.startParam.replaceAll('_', '.') : FALLBACK_URL;
+    const ws = new WebSocket(`wss://${socketUrl}/wfs`);
 
     console.log('Connecting to WebSocket server...');
 
