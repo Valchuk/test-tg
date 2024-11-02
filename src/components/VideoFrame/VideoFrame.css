@@ -1,15 +1,23 @@
-.display-data__header {
-  font-weight: 400;
+.video-frame__root {
+    display: grid;
+    align-items: center;
+    justify-content: center;
 }
 
-.display-data__line {
-  padding: 16px 24px;
+.video-frame__content {
+    min-width: 400px;
+    min-height: 400px;
 }
 
-.display-data__line-title {
-  color: var(--tg-theme-subtitle-text-color);
+.video-frame__controls {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }
 
-.display-data__line-value {
-  word-break: break-word;
+.video-frame__button {
+    font-size: 22px;
+    min-width: 28px;
 }

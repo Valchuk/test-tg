@@ -1,15 +1,27 @@
 import './VideoFrame.css';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLaunchParams } from '@telegram-apps/sdk-react';
+
+const FALLBACK_URL = 'sweeping-snail-new.ngrok-free.app';
+const DEFAULT_FRAME_SIZE = 400;
+const FRAME_SIZE_STEP = 100;
 
 export function VideoFrame() {
-  useEffect(() => {
-    const videoEl:HTMLElement | null = document.getElementById('videoStream');
+  const lp = useLaunchParams();
+  const videoEl = useRef<HTMLImageElement | null>(null);
+  const [frameSize, setFrameSize] = useState<number>(DEFAULT_FRAME_SIZE);
 
-    if (!videoEl) {
+  const handleFrameSize = useCallback((event) => {
+    const action = event.target.name;
+    setFrameSize((prevState) => action === 'decrease' ? prevState - FRAME_SIZE_STEP : prevState + FRAME_SIZE_STEP);
+  }, []);
+
+  useEffect(() => {
+    if (!videoEl.current) {
       return;
     }
 
-    const ws = new WebSocket('wss://sweeping-snail-new.ngrok-free.app/ws');
+    const ws = new WebSocket(`wss://${lp.startParam || FALLBACK_URL}/wfs`);
 
     console.log('Connecting to WebSocket server...');
 
@@ -19,10 +31,11 @@ export function VideoFrame() {
 
     ws.onmessage = (event) => {
       console.log('Received message from WebSocket');
+
       const blob = new Blob([event.data], { type: 'image/jpeg' });
 
-      if (videoEl instanceof HTMLImageElement) {
-        videoEl.src = URL.createObjectURL(blob);
+      if (videoEl.current instanceof HTMLImageElement) {
+        videoEl.current.src = URL.createObjectURL(blob);
       }
     };
 
@@ -41,8 +54,42 @@ export function VideoFrame() {
   }, []);
 
   return (
-    <div>
-      <img id="videoStream" alt="alt" />
+    <div className="video-frame__root">
+      <div className="video-frame__content">
+        {'lp.startParam'}:{lp.startParam}
+        <br />
+        <img
+          id="videoStream"
+          alt="alt"
+          src={'https://www.imgonline.com.ua/examples/red-yellow-flower.jpg'}
+          height={frameSize}
+          width={frameSize}
+          ref={(el) => (videoEl.current = el)}
+        />
+      </div>
+
+      <div className="video-frame__controls">
+        <p>Change frame size:</p>
+
+        <button
+          type="button"
+          onClick={handleFrameSize}
+          disabled={frameSize === DEFAULT_FRAME_SIZE}
+          name="decrease"
+          className="video-frame__button"
+        >
+          -
+        </button>
+        <button
+          type="button"
+          onClick={handleFrameSize}
+          disabled={frameSize - FRAME_SIZE_STEP === window.innerWidth}
+          name="increase"
+          className="video-frame__button"
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 }
